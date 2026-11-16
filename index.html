@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play</title>
+<style>
+  /* ====== EDIT THESE TWO LINES TO MATCH YOUR FILENAMES ====== */
+  :root { --photo: url("photo.jpg"); }
+  /* The audio filename is set in the <audio> tag below (audio.mp3) */
+
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: #1b1b1b var(--photo) center / cover no-repeat;
+    display: grid;
+    place-items: center;
+  }
+  .play {
+    width: clamp(96px, 22vmin, 180px);
+    aspect-ratio: 1;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .92);
+    color: #1b1b1b;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, .45);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .play:hover { transform: scale(1.06); background: #fff; }
+  .play:active { transform: scale(.97); }
+  .play:focus-visible { outline: 4px solid #fff; outline-offset: 6px; }
+  .play svg { width: 42%; height: 42%; fill: currentColor; }
+  .play .pause { display: none; }
+  .play.on .tri { display: none; }
+  .play.on .pause { display: block; }
+  .play:not(.on) .tri { margin-left: 8%; } /* optically centre the triangle */
+</style>
+</head>
+<body>
+  <button class="play" id="btn" aria-label="Play audio">
+    <svg class="tri" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg>
+    <svg class="pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="5" height="18" rx="1"/><rect x="14" y="3" width="5" height="18" rx="1"/></svg>
+  </button>
+
+  <audio id="audio" src="audio.mp3" preload="auto"></audio>
+
+<script>
+  const audio = document.getElementById("audio");
+  const btn = document.getElementById("btn");
+
+  btn.addEventListener("click", () => {
+    if (audio.paused) audio.play(); else audio.pause();
+  });
+  audio.addEventListener("play",  () => { btn.classList.add("on");    btn.setAttribute("aria-label", "Pause audio"); });
+  audio.addEventListener("pause", () => { btn.classList.remove("on"); btn.setAttribute("aria-label", "Play audio"); });
+  audio.addEventListener("ended", () => { btn.classList.remove("on"); btn.setAttribute("aria-label", "Play audio"); });
+</script>
+</body>
+</html>
